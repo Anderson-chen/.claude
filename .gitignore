@@ -32,3 +32,8 @@ plugins/
 
 # 專案狀態快照（各 repo 自有）
 projects/
+
+# Python 編譯快取
+__pycache__/
+*.pyc
+*.pyo
