@@ -1,0 +1,109 @@
+{
+  "skill_name": "generate-spring-ddd-modulith-template",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "幫我產生一個 Spring Boot DDD 多模組專案，groupId 是 com.acme，artifactId 是 ecommerce，bounded contexts 是 orders 和 catalog。使用 Spring Boot 4.x + JPA + PostgreSQL + JDK 25，Gradle Groovy DSL。",
+      "expected_output": "完整的 Gradle 多模組專案 scaffold，包含：settings.gradle（有 includeBuild build-logic）、build-logic/ 目錄下的 convention plugins（java-common-conventions、spring-module-conventions、library-conventions）、gradle/libs.versions.toml、commons/ 共享核心模組、orders/ 和 catalog/ 兩個 bounded context 模組（各含 domain/application/infrastructure 分層）、app/ bootstrap 模組（含 Application.java 和 application.yml）、docker-compose.yml。每個 bounded context 應包含 Aggregate Root、ValueObject record、Domain Event record、Repository interface、UseCase interface、Command record、ApplicationService、JPA entity、PersistenceAdapter、MapStruct mapper、REST controller、Flyway migration SQL、unit test。",
+      "files": [],
+      "assertions": [
+        {
+          "text": "settings.gradle 包含 pluginManagement { includeBuild 'build-logic' } 而非 buildSrc",
+          "type": "content_check"
+        },
+        {
+          "text": "build-logic/settings.gradle 存在",
+          "type": "structure_check"
+        },
+        {
+          "text": "gradle/libs.versions.toml 包含 springBoot、springModulith、flyway、postgresql、mapstruct、testcontainers 版本定義",
+          "type": "content_check"
+        },
+        {
+          "text": "每個 bounded context 模組包含 domain/model/{Entity}.java 且繼承 AggregateRoot",
+          "type": "content_check"
+        },
+        {
+          "text": "Entity ID 使用 record 實作（例如 OrderId(UUID value)）",
+          "type": "content_check"
+        },
+        {
+          "text": "Application layer 有 UseCase interface 和對應 ApplicationService（@Service @Transactional）",
+          "type": "content_check"
+        },
+        {
+          "text": "Infrastructure 的 JPA entity 與 domain model 分離，透過 MapStruct mapper 轉換",
+          "type": "content_check"
+        },
+        {
+          "text": "app/src/main/java 下的 Application.java 有 @Modulithic 和 @EnableJpaAuditing 標注",
+          "type": "content_check"
+        },
+        {
+          "text": "application.yml 包含 spring.threads.virtual.enabled: true",
+          "type": "content_check"
+        },
+        {
+          "text": "docker-compose.yml 包含 postgres 服務",
+          "type": "content_check"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to scaffold a Spring Boot DDD project with 3 bounded contexts: inventory, shipping, and payments. Group: io.mycompany, artifact: logistics-platform. Use Spring Boot 4.x with Gradle Groovy DSL, JDK 25, PostgreSQL.",
+      "expected_output": "Complete Gradle multi-module project for all 3 contexts. Each context should have hexagonal architecture layers (domain, application, infrastructure). The build-logic/ included build should have all 3 convention plugin files. Version catalog should define all necessary dependencies. Each context gets its own Flyway migration file.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "settings.gradle lists all 3 bounded context modules: inventory, shipping, payments",
+          "type": "content_check"
+        },
+        {
+          "text": "All 3 bounded contexts have the full DDD layer structure (domain/application/infrastructure)",
+          "type": "structure_check"
+        },
+        {
+          "text": "Each context has a separate Flyway V1 migration SQL file",
+          "type": "content_check"
+        },
+        {
+          "text": "Domain events use Java records implementing DomainEvent interface",
+          "type": "content_check"
+        },
+        {
+          "text": "app/build.gradle depends on all 3 context modules (implementation project(':inventory') etc.)",
+          "type": "content_check"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "幫我建立一個簡單的 DDD Spring Boot 專案，只有一個 bounded context：user-management。group: tw.com.example，artifact: user-platform。Spring Boot 4 + JDK 25 + PostgreSQL + Gradle Groovy。",
+      "expected_output": "Single bounded context project with complete scaffold. user-management context with User aggregate root, UserId value object record, UserCreatedEvent record, UserRepository interface, CreateUserCommand record, CreateUserUseCase interface, UserApplicationService, UserJpaEntity, UserPersistenceAdapter, UserMapper, UserController. All Gradle files and YAML config.",
+      "files": [],
+      "assertions": [
+        {
+          "text": "User aggregate root exists with factory method create() and registerEvent()",
+          "type": "content_check"
+        },
+        {
+          "text": "UserId is a record with UUID value field",
+          "type": "content_check"
+        },
+        {
+          "text": "UserController maps to /api/v1/users endpoint",
+          "type": "content_check"
+        },
+        {
+          "text": "PersistenceAdapter implements both UserRepository and SaveUserPort",
+          "type": "content_check"
+        },
+        {
+          "text": "Unit test for User domain (UserTest.java) exists with assertions for domain events",
+          "type": "content_check"
+        }
+      ]
+    }
+  ]
+}

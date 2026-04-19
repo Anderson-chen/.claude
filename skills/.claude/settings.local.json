@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template/references\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template/evals\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/eval-1-ecommerce-scaffold/with_skill/outputs\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/eval-1-ecommerce-scaffold/without_skill/outputs\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/eval-2-logistics-three-contexts/with_skill/outputs\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/eval-2-logistics-three-contexts/without_skill/outputs\")",
+      "Bash(mkdir -p \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/eval-3-single-context/with_skill/outputs\")",
+      "Bash(python eval-viewer/generate_review.py \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1\" --skill-name \"generate-spring-ddd-modulith-template\" --benchmark \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/benchmark.json\" --static \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/review.html\")",
+      "Bash(python -X utf8 eval-viewer/generate_review.py \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1\" --skill-name \"generate-spring-ddd-modulith-template\" --benchmark \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/benchmark.json\" --static \"C:/Users/wits/.claude/skills/generate-spring-ddd-modulith-template-workspace/iteration-1/review.html\")",
+      "Bash(start:*)"
+    ]
+  }
+}
