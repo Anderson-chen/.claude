@@ -1,3 +1,17 @@
 {
-  "autoUpdatesChannel": "latest"
+  "autoUpdatesChannel": "latest",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if git status --short | grep -q 'front-end/'; then cd front-end && npm run type-check && npm run lint:oxlint && npm run lint:eslint && npm run format; fi",
+            "timeout": 120,
+            "statusMessage": "前端品質檢查中..."
+          }
+        ]
+      }
+    ]
+  }
 }

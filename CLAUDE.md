@@ -16,7 +16,7 @@
 - 提出替代方案時，需附上各方案在「現在 vs. 未來規模」的適用性對比，不能只說「兩種都可以」。
 
 ## 模組邊界守護原則（DDD / 六角架構）
-- **MUST：當程式碼涉及跨模組邏輯時，主動評估是否放錯位置，並提示開發者。**
+- **MUST：進行任何程式碼改動前，先評估此改動是否符合模組邊界守護原則（DDD / 六角架構）。若發現違反邊界，必須先提示開發者並確認後才繼續。**
 - 判斷邏輯應放在哪個模組，使用以下問題：
   - 「這個邏輯如果把目前的模組拆掉，它應該住在哪？」→ 有答案就放回那個模組
   - 「這個邏輯的資料來源是幾個模組？」→ 單一來源放來源模組，跨模組才放彙整模組（如 analytics）
@@ -36,17 +36,9 @@
 - **MUST：遇到「框架/函式庫的功能不存在或行為異常」時，禁止直接改用手動替代方案。必須先用 WebSearch 查詢官方文件、changelog、GitHub issues，確認確實沒有官方支援才可提出替代作法。**
 - **MUST：使用新版本（major version）的框架或工具時，若遇到與舊版不同的行為，優先查詢該版本的 migration guide 或 release notes，再做判斷。**
 
-## 前端程式碼品質檢查（MUST）
+## 前端程式碼品質檢查
 
-**每次新增或修改 `front-end/` 內的前端程式碼後，必須依序執行以下四道指令並修復所有錯誤：**
-
-```bash
-cd front-end
-npm run type-check   # 1. 型別檢查
-npm run lint:oxlint  # 2. oxlint 快速靜態分析（自動修復）
-npm run lint:eslint  # 3. ESLint 完整規則檢查（自動修復）
-npm run format       # 4. Prettier 格式化
-```
+Stop Hook 自動執行（已設定於 `.claude/settings.json`）：偵測到 `front-end/` 有異動時，依序執行 `type-check → lint:oxlint → lint:eslint → format`。
 
 **修復規則：**
 - `error` 級別：必須修復，不得留存
