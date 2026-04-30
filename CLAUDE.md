@@ -35,3 +35,20 @@
 - 觸發情境：版本選擇、套件推薦、架構決策、安全設定、部署方式
 - **MUST：遇到「框架/函式庫的功能不存在或行為異常」時，禁止直接改用手動替代方案。必須先用 WebSearch 查詢官方文件、changelog、GitHub issues，確認確實沒有官方支援才可提出替代作法。**
 - **MUST：使用新版本（major version）的框架或工具時，若遇到與舊版不同的行為，優先查詢該版本的 migration guide 或 release notes，再做判斷。**
+
+## 前端程式碼品質檢查（MUST）
+
+**每次新增或修改 `front-end/` 內的前端程式碼後，必須依序執行以下四道指令並修復所有錯誤：**
+
+```bash
+cd front-end
+npm run type-check   # 1. 型別檢查
+npm run lint:oxlint  # 2. oxlint 快速靜態分析（自動修復）
+npm run lint:eslint  # 3. ESLint 完整規則檢查（自動修復）
+npm run format       # 4. Prettier 格式化
+```
+
+**修復規則：**
+- `error` 級別：必須修復，不得留存
+- `warning` 級別：合理的例外（如內部 SVG icon 的 `vue/no-v-html`）可加 `eslint-disable-next-line`；否則一律修復
+- type-check 出現 `[Vue] Resolve plugin path failed: vue-router/volar` 可忽略（npx 快取路徑已知問題）
