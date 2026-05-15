@@ -45,6 +45,18 @@
 - **MUST：遇到「框架/函式庫的功能不存在或行為異常」時，禁止直接改用手動替代方案。必須先用 WebSearch 查詢官方文件、changelog、GitHub issues，確認確實沒有官方支援才可提出替代作法。**
 - **MUST：使用新版本（major version）的框架或工具時，若遇到與舊版不同的行為，優先查詢該版本的 migration guide 或 release notes，再做判斷。**
 
+### WebSearch Fallback 規則
+- **MUST：所有 WebSearch 均依照以下順序執行，不得跳步：**
+  1. **WebSearch**（內建工具）→ 有結果則直接使用，標註 🔍 來源
+  2. **WebFetch**（WebSearch 無結果 / 被反爬蟲封鎖時）→ 直接抓取已知目標 URL 的完整內容
+  3. **明確告知**（WebFetch 仍失敗時）→ 必須說明：「找不到此資料，原因：[無結果 / 反爬蟲 / 需登入 / 網路異常]，建議手動查閱 [來源建議]」
+- **MUST：WebSearch 被封鎖的判斷條件（符合任一即觸發 WebFetch）：**
+  - 回傳結果為空（0 筆）
+  - 結果明顯與查詢無關（判定為被過濾）
+  - 收到 403 / CAPTCHA / 存取拒絕訊息
+- **MUST：任何搜尋失敗都不得靜默跳過，必須明確告知使用者失敗原因。**
+- **禁止在 WebFetch 失敗後自行猜測或用訓練資料補充搜尋結果，必須如實告知找不到。**
+
 ## 前端程式碼品質檢查
 
 Stop Hook 自動執行（已設定於 `.claude/settings.json`）：偵測到 `front-end/` 有異動時，依序執行 `type-check → lint:oxlint → lint:eslint → format`。
