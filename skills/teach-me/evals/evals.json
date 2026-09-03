@@ -1,0 +1,156 @@
+{
+  "skill_name": "teach-me",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "來練習",
+      "expected_output": "開場先讀取複習排程檔，報告今天到期的筆記與累計弱點，詢問要先複習還是練新題，在使用者選擇前不出任何題目",
+      "files": ["evals/files/review-schedule.md"],
+      "expectations": [
+        "回應前實際讀取了 review-schedule.md，而非憑空詢問使用者上次練到哪",
+        "列出 2026-08-17-java-scoped-values 與 2026-08-21-vue-vapor-mode 這兩份已到期的筆記",
+        "沒有把下次複習日為 2026-09-05 的 sysdesign-rag 誤列為到期",
+        "有回報累計弱點為維運成熟度（掛零 3 次）",
+        "詢問使用者要先複習還是直接練新題",
+        "在使用者做出選擇前，沒有開始出任何面試題",
+        "沒有讀取任何 -answers.md 檔案"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "來一題 Spring Boot 的，我大概三年經驗",
+      "expected_output": "先 WebSearch 取得最新題池並從候選中挑 1 題，標註來源與挑題理由，只列出評分維度名稱而不解釋內容",
+      "files": [],
+      "expectations": [
+        "實際呼叫了 WebSearch 工具取得題池，而不是憑訓練資料直接出題",
+        "搜尋關鍵字包含 Spring Boot 4 或 Spring Framework 7 等現行版本詞，而非只搜 Spring Boot 2 或 3",
+        "回應中標註了搜尋來源（連結或出處）",
+        "說明了為什麼從候選題中挑這一題的理由",
+        "列出該主題的四個評分維度名稱：程式與除錯、資料與持久化、分散式判斷、上線就緒度",
+        "沒有解釋任何一個評分維度該答什麼內容，也沒有提示答題要點（例如未出現「記得講熔斷降級」這類骨架提示）",
+        "只問一個核心問題，沒有一次丟出多道題目",
+        "題目深度符合三年經驗，不是「怎麼宣告一個 Bean」這類 L1 基礎操作題",
+        "沒有在題目後附上答案或解題方向"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Virtual Thread 我熟，只要在 synchronized 區塊裡做阻塞 IO，carrier thread 就會被 pin 住不能卸載，所以我們專案一律禁用 synchronized，全部改成 ReentrantLock。",
+      "expected_output": "辨識出這是在 Java 21 正確、但 JEP 491 之後已過期的答案，先承認舊版成立再把座標推到新版，以追問推進而非判錯",
+      "files": [],
+      "expectations": [
+        "明確指出這個說法在 Java 24 之前（例如 Java 21）是正確的，沒有直接判定使用者答錯",
+        "指出 JEP 491 在 Java 24 重寫了 JVM 的 monitor 實作，使 synchronized 不再 pin 住 carrier thread",
+        "有說明升級後不需要修改程式碼即可受益，或指出 ReentrantLock 的全面替換在新版已非必要",
+        "若提到殘餘的 pinning 情境（如 class initializer 內阻塞），有標明那是邊緣情況而非日常普遍問題",
+        "以追問形式推進，回應結尾是一個問題而不是結論",
+        "沒有直接給出完整的標準答案"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Vapor Mode？我完全沒碰過耶，我們專案還在 Vue 3.2",
+      "expected_output": "辨識「沒碰過」為無經驗基礎而非卡住，切換到教學引導模式，依講解→demo→踩雷→主動回憶四步進行",
+      "files": [],
+      "expectations": [
+        "沒有繼續用蘇格拉底式追問逼使用者回答，正確辨識「沒碰過」不等於「卡住」",
+        "先用簡短篇幅說明 Vapor Mode 為什麼存在（設計動機），而不是先講 API 怎麼寫",
+        "提供 20 行以內、語法正確且可實際運行的最小示範程式碼，而非偽代碼",
+        "至少給出一個踩雷案例或適用限制，不是只列優點",
+        "結尾有一道讓使用者主動回憶的應用題",
+        "該應用題沒有附上答案",
+        "有處理使用者停在 Vue 3.2 與 Vapor Mode 需要 3.6 之間的版本落差（例如說明降版出題策略或標示版本座標）"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "好，這題的 L3 我答完也懂了，直接換下一個主題吧",
+      "expected_output": "拒絕直接換主題，先進入 4 道延伸題的第一道（反面題），並說明流程",
+      "files": [],
+      "expectations": [
+        "沒有切換到新主題",
+        "出的是反面題，詢問該技術在什麼情境下反而會出問題，符合延伸題的固定順序第一道",
+        "有說明需要先完成延伸題才會換主題",
+        "沒有一次把 4 道延伸題全部丟出來，只問了第一道",
+        "沒有直接給出反面題的答案"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "來複習 scoped values 那一份",
+      "expected_output": "進入複習模式，只讀問題檔逐題發問，在使用者作答前不開啟答案檔，且不重新 WebSearch",
+      "files": [
+        "evals/files/review-schedule.md",
+        "evals/files/2026-08-17-java-scoped-values-questions.md",
+        "evals/files/2026-08-17-java-scoped-values-answers.md"
+      ],
+      "expectations": [
+        "讀取了 2026-08-17-java-scoped-values-questions.md",
+        "在使用者作答之前，沒有讀取 2026-08-17-java-scoped-values-answers.md",
+        "沒有呼叫 WebSearch，因為複習使用舊筆記原題而非重新取題池",
+        "一次只問一題，並從問題檔的第 1 題（L1）開始",
+        "問題中沒有夾帶答案關鍵詞（例如沒有先說出不可變綁定、動態範圍、範圍結束即回收）",
+        "沒有在使用者作答前就宣告本次複習的表現等級或更新排程檔"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "出一題 AI 協作能力的，我想練怎麼判斷 AI 寫出來的程式碼能不能用",
+      "expected_output": "出 T7 題型：給一段看似合理但有缺陷的程式碼，要求找出問題並說明驗證方式，且不預先透露任何缺陷",
+      "files": ["evals/files/ai-generated-CacheService.java"],
+      "expectations": [
+        "題目形式是針對具體程式碼找缺陷並說明如何驗證，而不是抽象討論 AI 趨勢或使用心得",
+        "列出 T7 的四個評分維度名稱：提示設計、產出驗證、缺陷偵測、責任邊界",
+        "沒有解釋這四個維度分別該答什麼內容",
+        "沒有預先指出程式碼中的任何一個具體缺陷，例如未點名在 read lock 內呼叫 store.remove、未點名 HashMap 非執行緒安全、未點名 getOrLoad 缺少 cache stampede 保護",
+        "要求使用者說明如何驗證判斷（而不只是找出 bug）",
+        "只問一個核心問題"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "好，把這輪匯出成筆記",
+      "expected_output": "匯出雙檔到 C:/project/note/interview-practice/ 目錄，問題檔不含答案與維度表，並同步更新複習排程",
+      "files": ["evals/files/review-schedule.md"],
+      "expectations": [
+        "檔案寫入 C:/project/note/interview-practice/ 目錄下，而不是舊版指定的、實際不存在的 C:/project/notes/ 路徑",
+        "產生 questions 與 answers 兩個檔案，命名格式為 {YYYY-MM-DD}-{topic-slug}-questions.md 與 -answers.md",
+        "問題檔內不含任何答案或解題提示",
+        "問題檔內不含維度表現表格，該表格只出現在答案檔",
+        "答案檔開頭標註了版本前提",
+        "問題檔與答案檔的條目編號一一對應，共 7 題（L1、L2、L3 各一題加 4 道延伸題）",
+        "更新了 review-schedule.md，新增這份筆記的列",
+        "新筆記的下次複習日為建立日加 1 天，複習次數為 0"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "來練習",
+      "expected_output": "開場同時讀取 review-schedule.md 與 quiz-me 的 gap-list.md，報告到期複習、缺口總數與最高優先缺口，給出複習／深挖缺口／練新題三個選項，在使用者選擇前不出題",
+      "files": ["evals/files/review-schedule.md", "evals/files/gap-list.md"],
+      "expectations": [
+        "實際讀取了 gap-list.md，而不是只讀 review-schedule.md",
+        "報告了待深挖的缺口總數",
+        "單獨點名「Kafka exactly-once 的實際代價」為最高優先，因其出現次數為 3",
+        "沒有把出現次數只有 1 的 HTTP/3 0-RTT 重放風險當成最高優先",
+        "沒有把狀態為「已深挖但未通」的 Saga 補償交易列為待深挖的推薦項目",
+        "沒有把已補起來的 Outbox pattern 或 ICP 索引下推列入待深挖",
+        "給出的選項包含深挖缺口這一項，而不是只有複習與練新題兩選項",
+        "在使用者做出選擇前，沒有開始出任何面試題，也沒有呼叫 WebSearch"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "深挖 Kafka exactly-once",
+      "expected_output": "即使題目來自 gap-list，仍走完整 WebSearch 題池流程再挑題，而非憑印象直接出題",
+      "files": ["evals/files/review-schedule.md", "evals/files/gap-list.md"],
+      "expectations": [
+        "實際呼叫了 WebSearch 取得該概念的面試題池，沒有因為 gap-list 已指定概念就跳過搜尋",
+        "標註了搜尋來源與挑題理由",
+        "出的是 L1 起手題，而不是一次丟出 L1 到 L3 三題",
+        "列出 T2 或該題所屬主題的四個評分維度名稱且沒有解釋內容",
+        "在使用者答完整輪之前，沒有先回寫 gap-list.md 把該概念標為已補起來"
+      ]
+    }
+  ]
+}

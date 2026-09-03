@@ -37,3 +37,10 @@ projects/
 __pycache__/
 *.pyc
 *.pyo
+
+# Skill eval 產物（逐字稿、評分、報表；每輪迭代都會重生）
+skills/*-workspace/
+
+# 編輯器備份檔（版本歷史由 git 保管）
+*.bak
+*.bak-*

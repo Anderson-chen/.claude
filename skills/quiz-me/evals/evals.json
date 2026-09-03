@@ -1,0 +1,109 @@
+{
+  "skill_name": "quiz-me",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "cold-open-first-turn",
+      "prompt": "快問快答，來 10 題",
+      "expected_output": "讀取覆蓋地圖與使用者座標後給出 5 行內開場報告，一次 WebSearch 建題池，然後只出第 1 題並等待回答",
+      "files": [
+        "evals/files/coverage-map.md",
+        "evals/files/gap-list.md",
+        "evals/files/review-schedule.md"
+      ],
+      "expectations": [
+        "實際讀取了 coverage-map.md，而不是憑空詢問使用者上次練到哪",
+        "報告下一個主題為 Q5 網路與 HTTP，依據 coverage-map 記載上次掃到 Q4",
+        "宣告的配比為 8/2/0，因為 Q5 是首次掃描",
+        "沒有重問使用者的年資、技術棧版本或工作領域，座標直接繼承自 review-schedule.md",
+        "實際呼叫了 WebSearch 建題池，而不是憑訓練資料直接出題",
+        "整輪只出了 1 題，沒有一次列出多題",
+        "第一題屬於廣度層，問的是某概念是什麼或解決什麼問題，而不是取捨題或失敗模式題",
+        "沒有出現蘇格拉底式引導語，例如未出現「你覺得」「再想想」「往哪個方向」「提示」等要使用者自己想出答案的措辭",
+        "沒有列出任何評分維度，也沒有出現 ●●○○ 這類評分符號",
+        "開場報告在 5 行以內"
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "full-round-simulated-user",
+      "prompt": "快問快答，來 10 題（模擬使用者依固定腳本作答：正確／不會／半懂／不會／正確／跳過／正確／不會／半懂／正確，最後說結束）",
+      "expected_output": "完整跑完 10 題連發與收尾統計，覆蓋率算出 50%，並自動寫檔更新 gap-list 與 coverage-map",
+      "files": [
+        "evals/files/coverage-map.md",
+        "evals/files/gap-list.md",
+        "evals/files/review-schedule.md"
+      ],
+      "expectations": [
+        "恰好出了 10 題，不多不少",
+        "每題判定都使用 ✅ 或 🔶 或 ❌ 三態標記",
+        "使用者答不會的題目立刻給出標準答案，沒有先要求使用者再試一次或給提示",
+        "沒有出現安慰性語句，例如未出現「沒關係」「別擔心」「這題本來就難」「很多人都不會」",
+        "沒有對答錯的題目做追問，例如未出現「那你知道為什麼嗎」",
+        "每一題的輸出在 6 行以內",
+        "答案後面附有一行「為什麼存在」的說明",
+        "收尾統計出現覆蓋率百分比",
+        "覆蓋率計算正確：依作答腳本應為 ✅4 🔶2 ❌4，覆蓋率 50%",
+        "在 sandbox 內寫入或更新了 gap-list.md",
+        "在 sandbox 內更新了 coverage-map.md",
+        "存檔前沒有徵詢同意，未出現「要不要匯出」這類詢問",
+        "沒有讀取或寫入真實的 C:/project/note 路徑"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "low-hitrate-downshift",
+      "prompt": "掃一輪資料庫的概念，我這塊很空",
+      "expected_output": "切到 Q4，依 coverage-map 記載的上輪命中率 35% 採 9/1/0 配比主動降檔",
+      "files": [
+        "evals/files/coverage-map.md",
+        "evals/files/gap-list.md",
+        "evals/files/review-schedule.md"
+      ],
+      "expectations": [
+        "實際讀取了 coverage-map.md",
+        "採用 Q4 已記錄的下輪配比 9/1/0，而不是首輪的 8/2/0 或預設的 6/3/1",
+        "說明了降檔原因與上輪命中率 35% 有關",
+        "第一題屬於廣度層",
+        "沒有把 gap-list 中已標為已補起來的 ICP 索引下推重複出成題目",
+        "整輪只出了 1 題",
+        "沒有出現蘇格拉底式引導語"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "recycle-and-teachme-handoff",
+      "prompt": "再 10 題，一樣 Kafka（模擬使用者作答，Kafka exactly-once 相關題一律答不會）",
+      "expected_output": "依 Q7 的 3/4/3 配比出題，回收滿 3 輪的缺口，排除已深挖但未通的項目，收尾點名交棒 teach-me",
+      "files": [
+        "evals/files/coverage-map.md",
+        "evals/files/gap-list.md",
+        "evals/files/review-schedule.md"
+      ],
+      "expectations": [
+        "實際讀取了 gap-list.md",
+        "採用 Q7 已記錄的 3/4/3 配比",
+        "判斷層題目至少 2 題，明顯多於首次掃描的配比",
+        "把 gap-list 中的 Kafka exactly-once 的實際代價回收出成題目",
+        "沒有把狀態為已深挖但未通的 Saga 補償交易排進本輪題目",
+        "恰好出了 10 題",
+        "收尾時點名 Kafka exactly-once 已累積 3 次以上仍空白，並建議交給 teach-me 深挖",
+        "更新 gap-list.md 時把 Kafka exactly-once 的出現次數往上加",
+        "沒有讀取或寫入真實的 C:/project/note 路徑"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "first-time-empty-state",
+      "prompt": "我知識面太窄，幫我補廣度",
+      "expected_output": "在完全沒有歷史檔案的情況下，一次問完三個建檔問題並等待回答，不宣告檔案不存在",
+      "files": [],
+      "expectations": [
+        "沒有向使用者宣告檔案不存在或找不到紀錄",
+        "三個建檔問題（年資、技術棧與版本、最空白的主題）在同一則訊息中一次問完，而不是一題一題來回問",
+        "沒有長篇解釋這個 skill 的運作方式或流程",
+        "在使用者回答那三個問題之前，沒有開始出任何題目"
+      ]
+    }
+  ]
+}
